@@ -1,0 +1,190 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: #fff;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #fff;
+    text-shadow: 0 0 10px #7a6fff, 0 0 20px #7a6fff;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(122, 111, 255, 0.3);
+}
+
+#playStop {
+    padding: 10px 25px;
+    background: #7a6fff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s;
+    box-shadow: 0 0 10px #7a6fff;
+}
+
+#playStop:hover {
+    background: #8c7dff;
+    box-shadow: 0 0 15px #7a6fff;
+}
+
+.tempo-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.tempo-control label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#tempo {
+    width: 200px;
+}
+
+.sequencer-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.track {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(122, 111, 255, 0.2);
+}
+
+.track-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px;
+    margin-right: 15px;
+    gap: 5px;
+}
+
+.track-info span {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.track-info .volume {
+    width: 80px;
+    transform: rotate(-90deg);
+}
+
+.steps {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+}
+
+.step {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.step.active {
+    background: #7a6fff;
+    box-shadow: 0 0 15px #7a6fff;
+}
+
+.step.on {
+    background: #ff6b6b;
+    box-shadow: 0 0 10px #ff6b6b;
+}
+
+.step.on.active {
+    background: linear-gradient(45deg, #7a6fff, #ff6b6b);
+    box-shadow: 0 0 15px #7a6fff, 0 0 10px #ff6b6b;
+}
+
+.fx-rack {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(122, 111, 255, 0.3);
+}
+
+.fx-rack h2 {
+    margin-bottom: 15px;
+    text-align: center;
+    text-shadow: 0 0 5px #7a6fff;
+}
+
+.fx-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.fx-btn {
+    padding: 10px;
+    background: rgba(122, 111, 255, 0.2);
+    color: white;
+    border: 1px solid #7a6fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.fx-btn:hover {
+    background: rgba(122, 111, 255, 0.4);
+}
+
+.fx-btn.active {
+    background: #7a6fff;
+    box-shadow: 0 0 15px #7a6fff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .fx-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .step {
+        width: 40px;
+        height: 40px;
+    }
+}
