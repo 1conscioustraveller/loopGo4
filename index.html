@@ -3,104 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Audio Step Sequencer</title>
+    <title>Neon Sequence - Web Audio Step Sequencer</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Web Audio Step Sequencer</h1>
+        <header class="app-header">
+            <h1 class="app-title">NEON SEQUENCE</h1>
+            <div class="header-glow"></div>
+        </header>
         
-        <div class="controls">
-            <button id="playStop">Play</button>
-            <div class="tempo-control">
-                <label for="tempo">Tempo: <span id="tempoValue">120</span> BPM</label>
-                <input type="range" id="tempo" min="60" max="200" value="120">
-            </div>
+        <div class="main-content">
+            <section class="transport-panel">
+                <div class="bpm-control">
+                    <div class="bpm-display">
+                        <span class="bpm-value" id="tempoValue">120</span>
+                        <span class="bpm-label">BPM</span>
+                    </div>
+                    <div class="bpm-slider-container">
+                        <input type="range" id="tempo" min="60" max="200" value="120" class="bpm-slider">
+                        <div class="slider-groove"></div>
+                    </div>
+                </div>
+                
+                <button id="playStop" class="play-button">
+                    <span class="play-icon"></span>
+                    <span class="stop-icon"></span>
+                    <span class="button-glow"></span>
+                </button>
+                
+                <div class="time-signature">
+                    <div class="signature-display">4/4</div>
+                </div>
+            </section>
+            
+            <section class="sequencer-grid">
+                <div class="track" id="kick-track">
+                    <div class="track-header">
+                        <div class="track-icon kick-icon"></div>
+                        <span class="track-name">KICK</span>
+                        <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="0.8">
+                    </div>
+                    <div class="step-rack">
+                        <div class="step" data-step="0"></div>
+                        <div class="step" data-step="1"></div>
+                        <div class="step" data-step="2"></div>
+                        <div class="step" data-step="3"></div>
+                        <div class="step" data-step="4"></div>
+                        <div class="step" data-step="5"></div>
+                        <div class="step" data-step="6"></div>
+                        <div class="step" data-step="7"></div>
+                    </div>
+                </div>
+                
+                <div class="track" id="snare-track">
+                    <div class="track-header">
+                        <div class="track-icon snare-icon"></div>
+                        <span class="track-name">SNARE</span>
+                        <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="0.7">
+                    </div>
+                    <div class="step-rack">
+                        <div class="step" data-step="0"></div>
+                        <div class="step" data-step="1"></div>
+                        <div class="step" data-step="2"></div>
+                        <div class="step" data-step="3"></div>
+                        <div class="step" data-step="4"></div>
+                        <div class="step" data-step="5"></div>
+                        <div class="step" data-step="6"></div>
+                        <div class="step" data-step="7"></div>
+                    </div>
+                </div>
+                
+                <div class="track" id="bass-track">
+                    <div class="track-header">
+                        <div class="track-icon bass-icon"></div>
+                        <span class="track-name">BASS</span>
+                        <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="0.7">
+                    </div>
+                    <div class="step-rack">
+                        <div class="step" data-step="0"></div>
+                        <div class="step" data-step="1"></div>
+                        <div class="step" data-step="2"></div>
+                        <div class="step" data-step="3"></div>
+                        <div class="step" data-step="4"></div>
+                        <div class="step" data-step="5"></div>
+                        <div class="step" data-step="6"></div>
+                        <div class="step" data-step="7"></div>
+                    </div>
+                </div>
+                
+                <div class="track" id="chord-track">
+                    <div class="track-header">
+                        <div class="track-icon chord-icon"></div>
+                        <span class="track-name">CHORD</span>
+                        <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="0.6">
+                    </div>
+                    <div class="step-rack">
+                        <div class="step" data-step="0"></div>
+                        <div class="step" data-step="1"></div>
+                        <div class="step" data-step="2"></div>
+                        <div class="step" data-step="3"></div>
+                        <div class="step" data-step="4"></div>
+                        <div class="step" data-step="5"></div>
+                        <div class="step" data-step="6"></div>
+                        <div class="step" data-step="7"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="fx-section">
+                <h2 class="fx-title">EFFECTS MATRIX</h2>
+                <div class="fx-grid">
+                    <div class="fx-unit" data-fx="lowpass">
+                        <div class="fx-button">
+                            <div class="fx-light"></div>
+                            <span class="fx-name">LOWPASS</span>
+                        </div>
+                    </div>
+                    <div class="fx-unit" data-fx="highpass">
+                        <div class="fx-button">
+                            <div class="fx-light"></div>
+                            <span class="fx-name">HIGHPASS</span>
+                        </div>
+                    </div>
+                    <div class="fx-unit" data-fx="distortion">
+                        <div class="fx-button">
+                            <div class="fx-light"></div>
+                            <span class="fx-name">DISTORTION</span>
+                        </div>
+                    </div>
+                    <div class="fx-unit" data-fx="delay">
+                        <div class="fx-button">
+                            <div class="fx-light"></div>
+                            <span class="fx-name">DELAY</span>
+                        </div>
+                    </div>
+                    <div class="fx-unit" data-fx="reverb">
+                        <div class="fx-button">
+                            <div class="fx-light"></div>
+                            <span class="fx-name">REVERB</span>
+                        </div>
+                    </div>
+                    <div class="fx-unit" data-fx="pitch">
+                        <div class="fx-button">
+                            <div class="fx-light"></div>
+                            <span class="fx-name">PITCH SHIFT</span>
+                        </div>
+                    </div>
+                    <div class="fx-unit" data-fx="chorus">
+                        <div class="fx-button">
+                            <div class="fx-light"></div>
+                            <span class="fx-name">CHORUS</span>
+                        </div>
+                    </div>
+                    <div class="fx-unit" data-fx="mute">
+                        <div class="fx-button">
+                            <div class="fx-light"></div>
+                            <span class="fx-name">MUTE</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
         
-        <div class="sequencer-grid">
-            <div class="track" id="kick-track">
-                <div class="track-info">
-                    <span>Kick</span>
-                    <input type="range" class="volume" min="0" max="1" step="0.01" value="0.8">
-                </div>
-                <div class="steps">
-                    <div class="step" data-step="0"></div>
-                    <div class="step" data-step="1"></div>
-                    <div class="step" data-step="2"></div>
-                    <div class="step" data-step="3"></div>
-                    <div class="step" data-step="4"></div>
-                    <div class="step" data-step="5"></div>
-                    <div class="step" data-step="6"></div>
-                    <div class="step" data-step="7"></div>
-                </div>
+        <footer class="app-footer">
+            <div class="vu-meter">
+                <div class="vu-level"></div>
             </div>
-            
-            <div class="track" id="snare-track">
-                <div class="track-info">
-                    <span>Snare</span>
-                    <input type="range" class="volume" min="0" max="1" step="0.01" value="0.7">
-                </div>
-                <div class="steps">
-                    <div class="step" data-step="0"></div>
-                    <div class="step" data-step="1"></div>
-                    <div class="step" data-step="2"></div>
-                    <div class="step" data-step="3"></div>
-                    <div class="step" data-step="4"></div>
-                    <div class="step" data-step="5"></div>
-                    <div class="step" data-step="6"></div>
-                    <div class="step" data-step="7"></div>
-                </div>
-            </div>
-            
-            <div class="track" id="bass-track">
-                <div class="track-info">
-                    <span>Bass</span>
-                    <input type="range" class="volume" min="0" max="1" step="0.01" value="0.7">
-                </div>
-                <div class="steps">
-                    <div class="step" data-step="0"></div>
-                    <div class="step" data-step="1"></div>
-                    <div class="step" data-step="2"></div>
-                    <div class="step" data-step="3"></div>
-                    <div class="step" data-step="4"></div>
-                    <div class="step" data-step="5"></div>
-                    <div class="step" data-step="6"></div>
-                    <div class="step" data-step="7"></div>
-                </div>
-            </div>
-            
-            <div class="track" id="chord-track">
-                <div class="track-info">
-                    <span>Chord</span>
-                    <input type="range" class="volume" min="0" max="1" step="0.01" value="0.6">
-                </div>
-                <div class="steps">
-                    <div class="step" data-step="0"></div>
-                    <div class="step" data-step="1"></div>
-                    <div class="step" data-step="2"></div>
-                    <div class="step" data-step="3"></div>
-                    <div class="step" data-step="4"></div>
-                    <div class="step" data-step="5"></div>
-                    <div class="step" data-step="6"></div>
-                    <div class="step" data-step="7"></div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="fx-rack">
-            <h2>FX Rack</h2>
-            <div class="fx-buttons">
-                <button class="fx-btn" data-fx="lowpass">Lowpass Filter</button>
-                <button class="fx-btn" data-fx="highpass">Highpass Filter</button>
-                <button class="fx-btn" data-fx="distortion">Distortion</button>
-                <button class="fx-btn" data-fx="delay">Delay</button>
-                <button class="fx-btn" data-fx="reverb">Reverb</button>
-                <button class="fx-btn" data-fx="pitch">Pitch Shift</button>
-                <button class="fx-btn" data-fx="chorus">Chorus</button>
-                <button class="fx-btn" data-fx="mute">Mute</button>
-            </div>
-        </div>
+            <div class="brand">NEON SEQUENCE v1.0</div>
+        </footer>
     </div>
 
     <script src="script.js"></script>
