@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Audio Step Sequencer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Web Audio Step Sequencer</h1>
+        
+        <div class="controls">
+            <button id="playStop">Play</button>
+            <div class="tempo-control">
+                <label for="tempo">Tempo: <span id="tempoValue">120</span> BPM</label>
+                <input type="range" id="tempo" min="60" max="200" value="120">
+            </div>
+        </div>
+        
+        <div class="sequencer-grid">
+            <div class="track" id="kick-track">
+                <div class="track-info">
+                    <span>Kick</span>
+                    <input type="range" class="volume" min="0" max="1" step="0.01" value="0.8">
+                </div>
+                <div class="steps">
+                    <div class="step" data-step="0"></div>
+                    <div class="step" data-step="1"></div>
+                    <div class="step" data-step="2"></div>
+                    <div class="step" data-step="3"></div>
+                    <div class="step" data-step="4"></div>
+                    <div class="step" data-step="5"></div>
+                    <div class="step" data-step="6"></div>
+                    <div class="step" data-step="7"></div>
+                </div>
+            </div>
+            
+            <div class="track" id="snare-track">
+                <div class="track-info">
+                    <span>Snare</span>
+                    <input type="range" class="volume" min="0" max="1" step="0.01" value="0.7">
+                </div>
+                <div class="steps">
+                    <div class="step" data-step="0"></div>
+                    <div class="step" data-step="1"></div>
+                    <div class="step" data-step="2"></div>
+                    <div class="step" data-step="3"></div>
+                    <div class="step" data-step="4"></div>
+                    <div class="step" data-step="5"></div>
+                    <div class="step" data-step="6"></div>
+                    <div class="step" data-step="7"></div>
+                </div>
+            </div>
+            
+            <div class="track" id="bass-track">
+                <div class="track-info">
+                    <span>Bass</span>
+                    <input type="range" class="volume" min="0" max="1" step="0.01" value="0.7">
+                </div>
+                <div class="steps">
+                    <div class="step" data-step="0"></div>
+                    <div class="step" data-step="1"></div>
+                    <div class="step" data-step="2"></div>
+                    <div class="step" data-step="3"></div>
+                    <div class="step" data-step="4"></div>
+                    <div class="step" data-step="5"></div>
+                    <div class="step" data-step="6"></div>
+                    <div class="step" data-step="7"></div>
+                </div>
+            </div>
+            
+            <div class="track" id="chord-track">
+                <div class="track-info">
+                    <span>Chord</span>
+                    <input type="range" class="volume" min="0" max="1" step="0.01" value="0.6">
+                </div>
+                <div class="steps">
+                    <div class="step" data-step="0"></div>
+                    <div class="step" data-step="1"></div>
+                    <div class="step" data-step="2"></div>
+                    <div class="step" data-step="3"></div>
+                    <div class="step" data-step="4"></div>
+                    <div class="step" data-step="5"></div>
+                    <div class="step" data-step="6"></div>
+                    <div class="step" data-step="7"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="fx-rack">
+            <h2>FX Rack</h2>
+            <div class="fx-buttons">
+                <button class="fx-btn" data-fx="lowpass">Lowpass Filter</button>
+                <button class="fx-btn" data-fx="highpass">Highpass Filter</button>
+                <button class="fx-btn" data-fx="distortion">Distortion</button>
+                <button class="fx-btn" data-fx="delay">Delay</button>
+                <button class="fx-btn" data-fx="reverb">Reverb</button>
+                <button class="fx-btn" data-fx="pitch">Pitch Shift</button>
+                <button class="fx-btn" data-fx="chorus">Chorus</button>
+                <button class="fx-btn" data-fx="mute">Mute</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
