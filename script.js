@@ -39,6 +39,9 @@ class StepSequencer {
         this.setupEventListeners();
         this.createAudioNodes();
         this.loadReverbImpulseResponse();
+        
+        // Initialize VU meter animation
+        this.animateVUMeter();
     }
     
     setupEventListeners() {
@@ -70,7 +73,7 @@ class StepSequencer {
         });
         
         // Volume sliders
-        document.querySelectorAll('.volume').forEach(slider => {
+        document.querySelectorAll('.volume-slider').forEach(slider => {
             slider.addEventListener('input', (e) => {
                 const trackId = e.target.closest('.track').id.split('-')[0];
                 const volume = parseFloat(e.target.value);
@@ -79,11 +82,11 @@ class StepSequencer {
         });
         
         // FX buttons
-        document.querySelectorAll('.fx-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const fxType = e.target.getAttribute('data-fx');
+        document.querySelectorAll('.fx-unit').forEach(unit => {
+            unit.addEventListener('click', (e) => {
+                const fxType = unit.getAttribute('data-fx');
                 this.toggleFX(fxType);
-                e.target.classList.toggle('active');
+                unit.classList.toggle('active');
             });
         });
     }
@@ -119,7 +122,6 @@ class StepSequencer {
         
         this.fx.pitch.node = this.audioContext.createBiquadFilter();
         // Pitch shift using filter frequency as a simple approach
-        // A real implementation would use a different technique
         
         this.fx.chorus.node = this.audioContext.createStereoPanner();
         this.fx.chorus.node.pan.value = 0;
@@ -173,13 +175,11 @@ class StepSequencer {
     
     connectFXNode(fxType) {
         // Implementation would connect the FX node properly
-        // This is a simplified version
         console.log(`Connecting ${fxType} FX`);
     }
     
     bypassFXNode(fxType) {
         // Implementation would bypass the FX node
-        // This is a simplified version
         console.log(`Bypassing ${fxType} FX`);
     }
     
@@ -212,10 +212,10 @@ class StepSequencer {
     togglePlayback() {
         if (this.isPlaying) {
             this.stop();
-            document.getElementById('playStop').textContent = 'Play';
+            document.getElementById('playStop').classList.remove('playing');
         } else {
             this.start();
-            document.getElementById('playStop').textContent = 'Stop';
+            document.getElementById('playStop').classList.add('playing');
         }
     }
     
@@ -398,6 +398,21 @@ class StepSequencer {
     setTrackVolume(trackId, volume) {
         this.tracks[trackId].volume = volume;
         this.tracks[trackId].gainNode.gain.value = volume;
+    }
+    
+    animateVUMeter() {
+        const vuLevel = document.querySelector('.vu-level');
+        const animate = () => {
+            if (this.isPlaying) {
+                // Random movement for the VU meter when playing
+                const width = 20 + Math.random() * 80;
+                vuLevel.style.width = `${width}%`;
+            } else {
+                vuLevel.style.width = '30%';
+            }
+            requestAnimationFrame(animate);
+        };
+        animate();
     }
 }
 
