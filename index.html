@@ -1,719 +1,110 @@
+index.html
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Step Sequencer</title>
-    <style>
-        :root {
-            --bg-dark: #121212;
-            --bg-card: #1a1a2e;
-            --primary: #4a00e0;
-            --secondary: #8e2de2;
-            --accent: #00b4db;
-            --neon-glow: 0 0 10px rgba(0, 180, 219, 0.7), 0 0 20px rgba(0, 180, 219, 0.5);
-            --text: #f8f8f8;
-            --grid-bg: #16213e;
-            --grid-cell: #0f3460;
-            --grid-active: #00b4db;
-            --grid-playing: #8e2de2;
-            --slider-bg: #333;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--bg-dark), #1a1a2e);
-            color: var(--text);
-            min-height: 100vh;
-            padding: 20px;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, var(--accent), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: var(--neon-glow);
-        }
-
-        .sequencer {
-            background: var(--bg-card);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            margin-bottom: 30px;
-        }
-
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            gap: 15px;
-        }
-
-        .play-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        button {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        button.active {
-            box-shadow: var(--neon-glow);
-        }
-
-        .tempo-control {
-            flex: 1;
-            min-width: 200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .tempo-control label {
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            -webkit-appearance: none;
-            height: 8px;
-            border-radius: 5px;
-            background: var(--slider-bg);
-            outline: none;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--accent);
-            cursor: pointer;
-            box-shadow: var(--neon-glow);
-        }
-
-        .grid-container {
-            overflow-x: auto;
-        }
-
-        .step-grid {
-            display: grid;
-            grid-template-columns: 100px repeat(8, 1fr);
-            gap: 8px;
-            margin-bottom: 20px;
-            min-width: 600px;
-        }
-
-        .track-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px;
-            font-weight: bold;
-            background: linear-gradient(to right, rgba(74, 0, 224, 0.3), rgba(142, 45, 226, 0.3));
-            border-radius: 8px;
-        }
-
-        .volume-slider {
-            width: 80px;
-            -webkit-appearance: none;
-            height: 6px;
-            border-radius: 3px;
-            background: var(--slider-bg);
-        }
-
-        .step-cell {
-            background-color: var(--grid-cell);
-            border-radius: 4px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            user-select: none;
-        }
-
-        .step-cell.active {
-            background-color: var(--grid-active);
-            box-shadow: var(--neon-glow);
-        }
-
-        .step-cell.playing {
-            background-color: var(--grid-playing);
-            box-shadow: var(--neon-glow);
-        }
-
-        .fx-container {
-            margin-top: 30px;
-        }
-
-        h2 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            color: var(--accent);
-            text-shadow: 0 0 5px rgba(0, 180, 219, 0.5);
-        }
-
-        .fx-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-        }
-
-        .fx-button {
-            padding: 12px;
-            text-align: center;
-            border-radius: 8px;
-            background: linear-gradient(135deg, rgba(74, 0, 224, 0.2), rgba(142, 45, 226, 0.2));
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .fx-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .fx-button.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            box-shadow: var(--neon-glow);
-        }
-
-        .current-step {
-            font-size: 1.2rem;
-            text-align: center;
-            margin-top: 15px;
-            font-weight: bold;
-            color: var(--accent);
-            text-shadow: 0 0 5px rgba(0, 180, 219, 0.5);
-        }
-
-        @media (max-width: 768px) {
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .play-controls {
-                justify-content: center;
-            }
-            
-            .step-grid {
-                grid-template-columns: 80px repeat(8, 1fr);
-                gap: 5px;
-            }
-            
-            .track-header {
-                flex-direction: column;
-                padding: 5px;
-            }
-            
-            .volume-slider {
-                width: 60px;
-            }
-            
-            .fx-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+    <title>Web Audio Step Sequencer</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Neon Step Sequencer</h1>
-        </header>
+        <h1>Web Audio Step Sequencer</h1>
         
-        <div class="sequencer">
-            <div class="controls">
-                <div class="play-controls">
-                    <button id="playBtn">Play</button>
-                    <button id="stopBtn">Stop</button>
-                </div>
-                
-                <div class="tempo-control">
-                    <label for="tempoSlider">Tempo: <span id="tempoValue">120</span> BPM</label>
-                    <input type="range" id="tempoSlider" min="60" max="200" value="120">
-                </div>
-            </div>
-            
-            <div class="grid-container">
-                <div class="step-grid" id="sequencerGrid">
-                    <!-- Grid will be generated by JavaScript -->
-                </div>
-            </div>
-            
-            <div class="current-step" id="currentStep">
-                Current Step: 1
+        <div class="controls">
+            <button id="playStop">Play</button>
+            <div class="tempo-control">
+                <label for="tempo">Tempo: <span id="tempoValue">120</span> BPM</label>
+                <input type="range" id="tempo" min="60" max="200" value="120">
             </div>
         </div>
         
-        <div class="fx-container">
-            <h2>Effects</h2>
-            <div class="fx-grid" id="fxGrid">
-                <!-- FX buttons will be generated by JavaScript -->
+        <div class="sequencer-grid">
+            <div class="track" id="kick-track">
+                <div class="track-info">
+                    <span>Kick</span>
+                    <input type="range" class="volume" min="0" max="1" step="0.01" value="0.8">
+                </div>
+                <div class="steps">
+                    <div class="step" data-step="0"></div>
+                    <div class="step" data-step="1"></div>
+                    <div class="step" data-step="2"></div>
+                    <div class="step" data-step="3"></div>
+                    <div class="step" data-step="4"></div>
+                    <div class="step" data-step="5"></div>
+                    <div class="step" data-step="6"></div>
+                    <div class="step" data-step="7"></div>
+                </div>
+            </div>
+            
+            <div class="track" id="snare-track">
+                <div class="track-info">
+                    <span>Snare</span>
+                    <input type="range" class="volume" min="0" max="1" step="0.01" value="0.7">
+                </div>
+                <div class="steps">
+                    <div class="step" data-step="0"></div>
+                    <div class="step" data-step="1"></div>
+                    <div class="step" data-step="2"></div>
+                    <div class="step" data-step="3"></div>
+                    <div class="step" data-step="4"></div>
+                    <div class="step" data-step="5"></div>
+                    <div class="step" data-step="6"></div>
+                    <div class="step" data-step="7"></div>
+                </div>
+            </div>
+            
+            <div class="track" id="bass-track">
+                <div class="track-info">
+                    <span>Bass</span>
+                    <input type="range" class="volume" min="0" max="1" step="0.01" value="0.7">
+                </div>
+                <div class="steps">
+                    <div class="step" data-step="0"></div>
+                    <div class="step" data-step="1"></div>
+                    <div class="step" data-step="2"></div>
+                    <div class="step" data-step="3"></div>
+                    <div class="step" data-step="4"></div>
+                    <div class="step" data-step="5"></div>
+                    <div class="step" data-step="6"></div>
+                    <div class="step" data-step="7"></div>
+                </div>
+            </div>
+            
+            <div class="track" id="chord-track">
+                <div class="track-info">
+                    <span>Chord</span>
+                    <input type="range" class="volume" min="0" max="1" step="0.01" value="0.6">
+                </div>
+                <div class="steps">
+                    <div class="step" data-step="0"></div>
+                    <div class="step" data-step="1"></div>
+                    <div class="step" data-step="2"></div>
+                    <div class="step" data-step="3"></div>
+                    <div class="step" data-step="4"></div>
+                    <div class="step" data-step="5"></div>
+                    <div class="step" data-step="6"></div>
+                    <div class="step" data-step="7"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="fx-rack">
+            <h2>FX Rack</h2>
+            <div class="fx-buttons">
+                <button class="fx-btn" data-fx="lowpass">Lowpass Filter</button>
+                <button class="fx-btn" data-fx="highpass">Highpass Filter</button>
+                <button class="fx-btn" data-fx="distortion">Distortion</button>
+                <button class="fx-btn" data-fx="delay">Delay</button>
+                <button class="fx-btn" data-fx="reverb">Reverb</button>
+                <button class="fx-btn" data-fx="pitch">Pitch Shift</button>
+                <button class="fx-btn" data-fx="chorus">Chorus</button>
+                <button class="fx-btn" data-fx="mute">Mute</button>
             </div>
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Audio context
-            let audioContext;
-            try {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            } catch (e) {
-                alert('Web Audio API is not supported in this browser');
-            }
-
-            // Global variables
-            let isPlaying = false;
-            let currentStep = 0;
-            let tempo = 120;
-            let noteLength = 0.2; // length of each note in seconds
-            let nextNoteTime = 0;
-            let schedulerInterval;
-            let lookahead = 25; // how frequently to call scheduling function in ms
-            let scheduleAheadTime = 0.1; // how far ahead to schedule audio in seconds
-            
-            // Instruments and their audio nodes
-            const instruments = ['Kick', 'Bass', 'Snare', 'Chord'];
-            const tracks = {};
-            const fxNodes = {};
-            
-            // Step grid state (4 instruments x 8 steps)
-            const stepState = Array(4).fill().map(() => Array(8).fill(false));
-            
-            // FX state
-            const fxState = {
-                lowpass: false,
-                highpass: false,
-                distortion: false,
-                delay: false,
-                reverb: false,
-                pitch: false,
-                chorus: false,
-                mute: false
-            };
-            
-            // Create the sequencer grid
-            function createSequencerGrid() {
-                const grid = document.getElementById('sequencerGrid');
-                
-                // Create header row
-                const headerRow = document.createElement('div');
-                headerRow.classList.add('track-header');
-                headerRow.textContent = 'Tracks';
-                grid.appendChild(headerRow);
-                
-                // Create step number headers
-                for (let i = 1; i <= 8; i++) {
-                    const stepHeader = document.createElement('div');
-                    stepHeader.classList.add('track-header');
-                    stepHeader.textContent = i;
-                    grid.appendChild(stepHeader);
-                }
-                
-                // Create instrument rows
-                instruments.forEach((instrument, instIndex) => {
-                    // Instrument name and volume slider
-                    const instHeader = document.createElement('div');
-                    instHeader.classList.add('track-header');
-                    
-                    const instName = document.createElement('div');
-                    instName.textContent = instrument;
-                    
-                    const volumeSlider = document.createElement('input');
-                    volumeSlider.type = 'range';
-                    volumeSlider.classList.add('volume-slider');
-                    volumeSlider.min = '0';
-                    volumeSlider.max = '1';
-                    volumeSlider.step = '0.01';
-                    volumeSlider.value = '0.7';
-                    volumeSlider.addEventListener('input', () => {
-                        if (tracks[instrument] && tracks[instrument].gain) {
-                            tracks[instrument].gain.gain.value = volumeSlider.value;
-                        }
-                    });
-                    
-                    instHeader.appendChild(instName);
-                    instHeader.appendChild(volumeSlider);
-                    grid.appendChild(instHeader);
-                    
-                    // Create step cells for this instrument
-                    for (let step = 0; step < 8; step++) {
-                        const cell = document.createElement('div');
-                        cell.classList.add('step-cell');
-                        cell.dataset.instrument = instIndex;
-                        cell.dataset.step = step;
-                        
-                        cell.addEventListener('click', () => {
-                            stepState[instIndex][step] = !stepState[instIndex][step];
-                            cell.classList.toggle('active');
-                        });
-                        
-                        grid.appendChild(cell);
-                    }
-                });
-            }
-            
-            // Create FX buttons
-            function createFXButtons() {
-                const fxGrid = document.getElementById('fxGrid');
-                const fxTypes = [
-                    {id: 'lowpass', name: 'Lowpass Filter'},
-                    {id: 'highpass', name: 'Highpass Filter'},
-                    {id: 'distortion', name: 'Distortion'},
-                    {id: 'delay', name: 'Delay'},
-                    {id: 'reverb', name: 'Reverb'},
-                    {id: 'pitch', name: 'Pitch Shift'},
-                    {id: 'chorus', name: 'Chorus'},
-                    {id: 'mute', name: 'Mute'}
-                ];
-                
-                fxTypes.forEach(fx => {
-                    const button = document.createElement('div');
-                    button.classList.add('fx-button');
-                    button.dataset.fx = fx.id;
-                    button.textContent = fx.name;
-                    
-                    button.addEventListener('click', () => {
-                        fxState[fx.id] = !fxState[fx.id];
-                        button.classList.toggle('active');
-                        applyFX(fx.id, fxState[fx.id]);
-                    });
-                    
-                    fxGrid.appendChild(button);
-                });
-            }
-            
-            // Initialize audio nodes for each instrument
-            function initAudioNodes() {
-                instruments.forEach(instrument => {
-                    // Each instrument gets its own gain node
-                    const gainNode = audioContext.createGain();
-                    gainNode.gain.value = 0.7;
-                    gainNode.connect(audioContext.destination);
-                    
-                    tracks[instrument] = {
-                        gain: gainNode,
-                        // Other instrument-specific properties will be added as needed
-                    };
-                });
-                
-                // Initialize FX nodes (but don't connect them yet)
-                initFXNodes();
-            }
-            
-            // Initialize FX audio nodes
-            function initFXNodes() {
-                // Lowpass filter
-                fxNodes.lowpass = audioContext.createBiquadFilter();
-                fxNodes.lowpass.type = 'lowpass';
-                fxNodes.lowpass.frequency.value = 1000;
-                
-                // Highpass filter
-                fxNodes.highpass = audioContext.createBiquadFilter();
-                fxNodes.highpass.type = 'highpass';
-                fxNodes.highpass.frequency.value = 500;
-                
-                // Distortion
-                fxNodes.distortion = audioContext.createWaveShaper();
-                fxNodes.distortion.curve = makeDistortionCurve(400);
-                fxNodes.distortion.oversample = '4x';
-                
-                // Delay
-                fxNodes.delay = audioContext.createDelay();
-                fxNodes.delay.delayTime.value = 0.3;
-                const delayGain = audioContext.createGain();
-                delayGain.gain.value = 0.5;
-                fxNodes.delay.connect(delayGain);
-                delayGain.connect(audioContext.destination);
-                
-                // Reverb (convolution reverb would be better, but for simplicity using a simple filter)
-                fxNodes.reverb = audioContext.createConvolver();
-                // Simple impulse response for reverb
-                const buffer = audioContext.createBuffer(2, audioContext.sampleRate * 2, audioContext.sampleRate);
-                for (let channel = 0; channel < buffer.numberOfChannels; channel++) {
-                    const data = buffer.getChannelData(channel);
-                    for (let i = 0; i < buffer.length; i++) {
-                        data[i] = Math.random() * 2 - 1;
-                    }
-                }
-                fxNodes.reverb.buffer = buffer;
-                
-                // Pitch shift (using delay to create a doubling effect)
-                fxNodes.pitch = audioContext.createDelay();
-                fxNodes.pitch.delayTime.value = 0.01;
-                
-                // Chorus (using delay and oscillator)
-                fxNodes.chorus = audioContext.createDelay();
-                fxNodes.chorus.delayTime.value = 0.025;
-                const chorusLFO = audioContext.createOscillator();
-                chorusLFO.frequency.value = 3;
-                const chorusLFOGain = audioContext.createGain();
-                chorusLFOGain.gain.value = 0.005;
-                chorusLFO.connect(chorusLFOGain);
-                chorusLFOGain.connect(fxNodes.chorus.delayTime);
-                chorusLFO.start();
-                
-                // Mute is just a gain node with 0 gain
-                fxNodes.mute = audioContext.createGain();
-                fxNodes.mute.gain.value = 1;
-            }
-            
-            // Helper function for distortion curve
-            function makeDistortionCurve(amount) {
-                const k = typeof amount === 'number' ? amount : 50;
-                const n_samples = 44100;
-                const curve = new Float32Array(n_samples);
-                const deg = Math.PI / 180;
-                
-                for (let i = 0; i < n_samples; i++) {
-                    const x = i * 2 / n_samples - 1;
-                    curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
-                }
-                return curve;
-            }
-            
-            // Apply or remove FX
-            function applyFX(fxType, enable) {
-                // First, disconnect all instruments from the destination
-                instruments.forEach(instrument => {
-                    if (tracks[instrument].gain) {
-                        tracks[instrument].gain.disconnect();
-                    }
-                });
-                
-                // Build the FX chain based on current FX state
-                let lastNode = null;
-                const fxChain = [];
-                
-                // Add enabled FX to the chain in a specific order
-                if (fxState.lowpass) fxChain.push(fxNodes.lowpass);
-                if (fxState.highpass) fxChain.push(fxNodes.highpass);
-                if (fxState.distortion) fxChain.push(fxNodes.distortion);
-                if (fxState.chorus) fxChain.push(fxNodes.chorus);
-                if (fxState.delay) fxChain.push(fxNodes.delay);
-                if (fxState.reverb) fxChain.push(fxNodes.reverb);
-                if (fxState.pitch) fxChain.push(fxNodes.pitch);
-                if (fxState.mute) fxChain.push(fxNodes.mute);
-                
-                // Connect the FX chain
-                instruments.forEach(instrument => {
-                    if (tracks[instrument].gain) {
-                        if (fxChain.length > 0) {
-                            // Connect instrument to first FX node
-                            tracks[instrument].gain.connect(fxChain[0]);
-                            
-                            // Connect FX nodes in sequence
-                            for (let i = 0; i < fxChain.length - 1; i++) {
-                                fxChain[i].connect(fxChain[i + 1]);
-                            }
-                            
-                            // Connect last FX node to destination
-                            fxChain[fxChain.length - 1].connect(audioContext.destination);
-                        } else {
-                            // No FX, connect directly to destination
-                            tracks[instrument].gain.connect(audioContext.destination);
-                        }
-                    }
-                });
-            }
-            
-            // Play a note for a specific instrument
-            function playNote(instrument, time) {
-                if (!tracks[instrument].oscillator) {
-                    tracks[instrument].oscillator = audioContext.createOscillator();
-                    tracks[instrument].oscillator.connect(tracks[instrument].gain);
-                    tracks[instrument].oscillator.start();
-                }
-                
-                const osc = tracks[instrument].oscillator;
-                
-                switch (instrument) {
-                    case 'Kick':
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(150, time);
-                        osc.frequency.exponentialRampToValueAtTime(0.001, time + 0.5);
-                        break;
-                    case 'Bass':
-                        osc.type = 'sawtooth';
-                        osc.frequency.setValueAtTime(110, time);
-                        break;
-                    case 'Snare':
-                        osc.type = 'noise';
-                        break;
-                    case 'Chord':
-                        osc.type = 'sawtooth';
-                        // Simple chord progression
-                        const chords = [164.81, 196.00, 146.83, 174.61]; // E3, G3, D3, F3
-                        osc.frequency.setValueAtTime(chords[currentStep % 4], time);
-                        break;
-                }
-            }
-            
-            // Scheduler function
-            function scheduler() {
-                while (nextNoteTime < audioContext.currentTime + scheduleAheadTime) {
-                    // Highlight current step in UI
-                    updateStepUI(currentStep);
-                    
-                    // Play notes for each instrument that has this step active
-                    instruments.forEach((instrument, instIndex) => {
-                        if (stepState[instIndex][currentStep]) {
-                            playNote(instrument, nextNoteTime);
-                        }
-                    });
-                    
-                    // Advance to next step
-                    nextNote();
-                }
-            }
-            
-            // Advance to next step
-            function nextNote() {
-                const secondsPerBeat = 60.0 / tempo;
-                nextNoteTime += secondsPerBeat;
-                
-                currentStep++;
-                if (currentStep >= 8) {
-                    currentStep = 0;
-                }
-            }
-            
-            // Update step highlighting in UI
-            function updateStepUI(step) {
-                // Remove playing class from all cells
-                document.querySelectorAll('.step-cell').forEach(cell => {
-                    cell.classList.remove('playing');
-                });
-                
-                // Add playing class to current step cells
-                document.querySelectorAll(`.step-cell[data-step="${step}"]`).forEach(cell => {
-                    cell.classList.add('playing');
-                });
-                
-                // Update current step display
-                document.getElementById('currentStep').textContent = `Current Step: ${step + 1}`;
-            }
-            
-            // Start the sequencer
-            function startSequencer() {
-                if (isPlaying) return;
-                
-                isPlaying = true;
-                currentStep = 0;
-                nextNoteTime = audioContext.currentTime;
-                
-                // Start scheduler
-                schedulerInterval = setInterval(() => scheduler(), lookahead);
-                
-                // Update button states
-                document.getElementById('playBtn').textContent = 'Pause';
-            }
-            
-            // Stop the sequencer
-            function stopSequencer() {
-                if (!isPlaying) return;
-                
-                isPlaying = false;
-                clearInterval(schedulerInterval);
-                
-                // Stop all oscillators
-                instruments.forEach(instrument => {
-                    if (tracks[instrument].oscillator) {
-                        tracks[instrument].oscillator.stop();
-                        tracks[instrument].oscillator.disconnect();
-                        delete tracks[instrument].oscillator;
-                    }
-                });
-                
-                // Reset UI
-                document.querySelectorAll('.step-cell').forEach(cell => {
-                    cell.classList.remove('playing');
-                });
-                
-                document.getElementById('currentStep').textContent = 'Current Step: 1';
-                document.getElementById('playBtn').textContent = 'Play';
-            }
-            
-            // Initialize the app
-            function init() {
-                createSequencerGrid();
-                createFXButtons();
-                initAudioNodes();
-                
-                // Set up event listeners
-                document.getElementById('playBtn').addEventListener('click', () => {
-                    if (audioContext.state === 'suspended') {
-                        audioContext.resume();
-                    }
-                    
-                    if (isPlaying) {
-                        stopSequencer();
-                    } else {
-                        startSequencer();
-                    }
-                });
-                
-                document.getElementById('stopBtn').addEventListener('click', stopSequencer);
-                
-                document.getElementById('tempoSlider').addEventListener('input', function() {
-                    tempo = parseInt(this.value);
-                    document.getElementById('tempoValue').textContent = tempo;
-                });
-            }
-            
-            // Start initialization when page loads
-            init();
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
